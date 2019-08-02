@@ -1,14 +1,24 @@
 import React from "react";
-import axios from "axios";
-import CurrentData from "./curentData";
+import CurentDataForecast from "./currentDataForecast/curentDataForecast";
+import Grid from "@material-ui/core/Grid";
+import Clock from "./clock";
+import MLStuff from "../Logic/mlStuff";
+
 
 class Homepage extends React.Component {
 
-
   render() {
-    return <div>
-      <CurrentData/>
-    </div>
+    return (
+      <Grid container justify="flex-end">
+        <Grid item xs={2}  >
+          <Clock/>
+          <CurentDataForecast />
+        </Grid>
+        <Grid item xs={1}>
+          {/* <MLStuff /> */}
+        </Grid>
+      </Grid>
+    );
   }
 }
 
