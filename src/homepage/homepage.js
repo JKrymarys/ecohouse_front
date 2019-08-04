@@ -13,9 +13,10 @@ class Homepage extends React.Component {
         <Grid item xs={2}  >
           <Clock/>
           <CurentDataForecast />
+          <MLStuff />
         </Grid>
         <Grid item xs={1}>
-          {/* <MLStuff /> */}
+          
         </Grid>
       </Grid>
     );
