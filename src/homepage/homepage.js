@@ -10,12 +10,12 @@ class Homepage extends React.Component {
   render() {
     return (
       <Grid container justify="flex-end">
-        <Grid item xs={2}  >
+        <Grid item xs={4}  >
           <Clock/>
           <CurentDataForecast />
           <MLStuff />
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={4}>
           
         </Grid>
       </Grid>

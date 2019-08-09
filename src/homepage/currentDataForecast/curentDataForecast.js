@@ -16,14 +16,15 @@ class CurentDataForecast extends React.Component {
       let tempData = data.data;
       console.log("tempData", tempData);
 
-      // this.setState(prevState => ({
-      //   currentCity: tempData.name,
-      //   currentTemp: tempData.main.temp,
-      //   currentHumidity: tempData.main.humidity,
-      //   currentPressure: tempData.main.pressure,
-      // }));
-      //currentWatherData = data.data;
-      //console.log("currentWeatherData", this.state.currentWatherData);
+      this.setState(prevState => ({
+        currentCity: tempData.name,
+        currentTemp: tempData.main.temp,
+        currentHumidity: tempData.main.humidity,
+        currentPressure: tempData.main.pressure,
+      }));
+      
+      // currentWatherData = data.data;
+      // console.log("currentWeatherData", tempData);
     });
 
   }
