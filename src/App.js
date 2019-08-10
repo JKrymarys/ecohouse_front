@@ -1,13 +1,25 @@
 import React from 'react';
 import './App.css';
 import Homepage from "./homepage/homepage"
+import { withStyles } from "@material-ui/core";
 
-function App() {
-  return (
-    <div className="App">
-        <Homepage> </Homepage>
-    </div>
-  );
+const styles = theme => ({
+  root: {
+    padding: 24,
+  }
+})
+
+class App extends React.Component{
+  render() {
+    const {classes } = this.props;
+
+    return (
+      <div className={classes.root}>
+          <Homepage> </Homepage>
+      </div>
+    );
+  }
+
 }
 
-export default App;
+export default withStyles(styles)(App);

@@ -1,7 +1,16 @@
 import React from "react";
 import axios from "axios";
-import Paper from '@material-ui/core/Paper';
+import {withStyles, Paper}  from '@material-ui/core';
 import { currentWatherApi } from "../../env"
+
+
+const styles = theme => ({
+  infoPaper: {
+    textAlign: "center",
+    margin: 20,
+    width: "100%"
+  }
+})
 
 class CurentDataForecast extends React.Component {
   constructor(pros) {
@@ -30,15 +39,16 @@ class CurentDataForecast extends React.Component {
   }
 
   render() {
+    const {classes } = this.props;
     return (
-      <Paper>
-        <h3> Weather forecast for : {this.state.currentCity} </h3>
-        <h3> Current temperature : {this.state.currentTemp} </h3>
-        <h3> Current pressure  : {this.state.currentPressure} hPa </h3>
-        <h3> Humidity in {this.state.currentCity} : {this.state.currentHumidity} %</h3>
+      <Paper className={classes.infoPaper} >
+        <h4> Weather forecast for : {this.state.currentCity} </h4>
+        <h4> Current temperature : {this.state.currentTemp} </h4>
+        <h4> Current pressure  : {this.state.currentPressure} hPa </h4>
+        <h4> Humidity in {this.state.currentCity} : {this.state.currentHumidity} %</h4>
         </Paper>
     );
   }
 }
 
-export default CurentDataForecast;
+export default withStyles(styles)(CurentDataForecast);

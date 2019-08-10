@@ -1,96 +1,50 @@
 import * as tf from "@tensorflow/tfjs";
-import { TextField, Button } from "@material-ui/core";
+import { TextField, Button, Grid } from "@material-ui/core";
 import React from "react";
+import axios from "axios";
+import { lastWeatherEntry, lastHouseDataEntry } from "../env";
+import { trainingInput, trainingYs } from "./trainingData";
 
 const LEARNING_RATE = 0.1;
 const LEARNING_ITERATIONS = 100;
-
 const model = tf.sequential();
-
 const configHiddenLayer = {
   units: 4,
   inputShape: [3],
   activation: "sigmoid"
 };
-
 const configOutputLayer = {
   units: 1,
   activation: "sigmoid"
 };
-
 const sgdOptimizer = tf.train.sgd(LEARNING_RATE);
 // const lossFunction
-
 const compileConifg = {
   optimizer: sgdOptimizer,
   loss: "meanSquaredError"
 };
-
 const fitConfig = {
   verbose: true,
   epochs: 5
 };
-
 const xs_inputs_prod = tf.tensor2d([[22, 23, 29]]);
-
 //temp_house, temp_desired, temp_outside,
-const xs_inputs = tf.tensor2d([
-  //inputs - ciepło otworzyc okna
-  [22, 23, 25],
-  [22, 23, 25],
-  [21, 23, 28],
-
-  //TO DO MARGINES
-
-  //inputs - ciepło zamknac + zaslonic okna
-  [23, 23, 28],
-  [23, 23, 28],
-  [23, 23, 28],
-
-  // otworz okna
-  [19, 23, 25],
-  [19, 23, 25],
-  [19, 23, 28],
-
-  // zamknij okna
-
-  [25, 23, 19],
-  [29, 23, 15],
-  [26, 23, 18]
-]);
-
-const training_ys_inputs = tf.tensor2d([
-  [1],
-  [1],
-  [1],
-
-  [0],
-  [0],
-  [0],
-
-  [1],
-  [1],
-  [1],
-
-  [0],
-  [0],
-  [0]
-]);
-
-// async function feedData() {
-//   return await model.fit(xs_inputs, training_ys_inputs,fitConfig);
-// }
+const xs_inputs = tf.tensor2d(trainingInput);
+const training_ys_inputs = tf.tensor2d(trainingYs);
 
 class MLStuff extends React.Component {
   constructor(pros) {
     super(pros);
     this.state = {
       isModelTrained: false,
-      result: 0,
+      result: null,
       currentTemp: 0,
-      desiredTemp: 0,
+      desiredTemp: 23,
       outsiteTemp: 0,
-      finalLoss: 0
+      finalLoss: 0,
+
+      lastWeatherResult: {},
+      lastHomedataResult: {}
     };
   }
 
@@ -100,9 +54,9 @@ class MLStuff extends React.Component {
 
   startML = () => {
     let input = [
-      parseInt(this.state.currentTemp),
+      parseInt(this.state.lastHomedataResult.temp),
       parseInt(this.state.desiredTemp),
-      parseInt(this.state.outsiteTemp)
+      parseInt(this.state.lastWeatherResult.temp)
     ];
     const xs_inputs_prod = tf.tensor2d([input]);
 
@@ -113,6 +67,40 @@ class MLStuff extends React.Component {
         result: Math.round(res)
       });
     });
+  };
+
+  startMLOnRealData = () => {
+    // lastWeatherEntry, lastHouseDataEntry
+
+    function getLastWeather() {
+      return axios.get(lastWeatherEntry, { crossdomain: true });
+    }
+    function getLastHouseData() {
+      return axios.get(lastHouseDataEntry, { crossdomain: true });
+    }
+
+    axios
+      .all([getLastWeather(), getLastHouseData()])
+      .then(
+        axios.spread((weather, housedata) => {
+          this.setState({
+            lastWeatherResult: {
+              datetime: weather.data[0][0].datetime.value,
+              temp: weather.data[0][0].temp,
+              humidity: weather.data[0][0].humidity,
+              pressure: weather.data[0][0].pressure
+            },
+            lastHomedataResult: {
+              datetime: housedata.data[0][0].datetime.value,
+              temp: housedata.data[0][0].temp_house,
+              pressure: housedata.data[0][0].pressure_house
+            }
+          });
+        })
+      )
+      .then(() => {
+        this.startML();
+      });
   };
 
   trainModel = async function() {
@@ -148,76 +136,63 @@ class MLStuff extends React.Component {
     });
   }
 
+  // componentDidMount() {
+  //   this.startMLOnRealData();
+
+  // }
+
   //TODO: NIECH SIE MODEL NIE RENDERUJE PONOWNIE - uwaga na stan i na metody lifecycle
   // const [result, setResult] = useState(0);
 
   //   console.log("prediction", ys_outputs)
+  createResult(result) {
+    if (result === 1) return "OPEN WINDOWS TO HEAT HOUSE";
+    else if (result === 0) return "CLOSE WINDOWS TO REDUCE COLLING OF HOUSE";
+    else return "-";
+  }
 
   render() {
     const {
-      model,
       result,
-      currentTemp,
-      desiredTemp,
-      outsiteTemp,
-      finalLoss
+      finalLoss,
+      lastWeatherResult,
+      lastHomedataResult
     } = this.state;
 
     return (
       <div>
-        <form>
-          <TextField
-            id="currentTemp"
-            label="Current Temp"
-            value={currentTemp}
-            onChange={this.onChange}
-            type="number"
-            // className={classes.textField}
-            InputLabelProps={{
-              shrink: true
-            }}
-            margin="normal"
-            variant="filled"
-          />
-          <TextField
-            id="desiredTemp"
-            label="Chosen Temp"
-            value={desiredTemp}
-            onChange={this.onChange}
-            type="number"
-            // className={classes.textField}
-            InputLabelProps={{
-              shrink: true
-            }}
-            margin="normal"
-            variant="filled"
-          />
-          <TextField
-            id="outsiteTemp"
-            label="Outsite temp"
-            value={outsiteTemp}
-            onChange={this.onChange}
-            type="number"
-            // className={classes.textField}
-            InputLabelProps={{
-              shrink: true
-            }}
-            margin="normal"
-            variant="filled"
-          />
-        </form>
+        <Grid container direction="column">
+          <Grid item xs={6}>
+            <h4>Machine Learning Component</h4>
+          </Grid>
+          <Grid item xs={6}>
+            <p>Weather forecast for {lastWeatherResult.datetime} </p>
+            <table>
+              <tr>Temp: {lastWeatherResult.temp}</tr>
+              <tr>Humidity: {lastWeatherResult.humidity}</tr>
+              <tr>Pressure: {lastWeatherResult.pressure}</tr>
+            </table>
+            <p>House data for {lastHomedataResult.datetime} </p>
+            <table>
+              <tr>Temp: {lastHomedataResult.temp}</tr>
+              <tr>Pressure: {lastHomedataResult.pressure}</tr>
+            </table>
 
-        <Button
-          variant="contained"
-          onClick={this.startML}
-          disabled={!this.state.isModelTrained}
-        >
-          Do ML!
-        </Button>
+            <Button
+              variant="contained"
+              onClick={this.startMLOnRealData}
+              disabled={!this.state.isModelTrained}
+            >
+              Do ML!
+            </Button>
+          </Grid>
 
-        <div>Final Loss of the Model is: {finalLoss}</div>
-        <div>For the input data: {xs_inputs_prod.toString()}</div>
-        <div>Result is: {result}</div>
+          <Grid item item xs={6}>
+            <div>Final Loss of the Model is: {finalLoss}</div>
+            <div>Result is: {this.createResult(result)}</div>
+          </Grid>
+        </Grid>
+
         <div
           style={{
             position: "fixed",
@@ -230,16 +205,21 @@ class MLStuff extends React.Component {
             background: "rgba(255,255,255,0.8)"
           }}
         >
-          <p style={{
-            position: "fixed",
-            // top: "50%",
-            // height: "100%",
-            // color: "white",
-            display: !this.state.isModelTrained ? "block" : "none",
-            top: "50%",
-            left: "50%",
-            zIndex: 1000,
-          }} > System is learning now :) <br/> Please give it a moment or two.</p> 
+          <p
+            style={{
+              position: "fixed",
+              // top: "50%",
+              // height: "100%",
+              // color: "white",
+              display: !this.state.isModelTrained ? "block" : "none",
+              top: "50%",
+              left: "50%",
+              zIndex: 1000
+            }}
+          >
+            {" "}
+            System is learning now :) <br /> Please give it a moment or two.
+          </p>
         </div>
       </div>
     );
