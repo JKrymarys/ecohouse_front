@@ -1,5 +1,5 @@
 import * as tf from "@tensorflow/tfjs";
-import { TextField, Button, Grid } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import React from "react";
 import axios from "axios";
 import { lastWeatherEntry, lastHouseDataEntry } from "../env";
@@ -27,7 +27,7 @@ const fitConfig = {
   verbose: true,
   epochs: 5
 };
-const xs_inputs_prod = tf.tensor2d([[22, 23, 29]]);
+
 //temp_house, temp_desired, temp_outside,
 const xs_inputs = tf.tensor2d(trainingInput);
 const training_ys_inputs = tf.tensor2d(trainingYs);
@@ -42,7 +42,7 @@ class MLStuff extends React.Component {
       desiredTemp: 23,
       outsiteTemp: 0,
       finalLoss: 0,
-
+      lastPredictionTime: null,
       lastWeatherResult: {},
       lastHomedataResult: {}
     };
@@ -64,7 +64,8 @@ class MLStuff extends React.Component {
     output.data().then(res => {
       console.log("res", res);
       this.setState({
-        result: Math.round(res)
+        result: Math.round(res),
+        lastPredictionTime: new Date().toLocaleString()
       });
     });
   };
@@ -114,8 +115,6 @@ class MLStuff extends React.Component {
         this.setState({
           finalLoss: response.history.loss[0]
         });
-
-      console.log(response.history.loss[0]);
     }
   };
 
@@ -135,14 +134,12 @@ class MLStuff extends React.Component {
       });
     });
   }
-
-  // componentDidMount() {
-  //   this.startMLOnRealData();
-
-  // }
-
-  //TODO: NIECH SIE MODEL NIE RENDERUJE PONOWNIE - uwaga na stan i na metody lifecycle
-  // const [result, setResult] = useState(0);
+  componentDidMount() {
+    this.timerID = setInterval(() => this.startMLOnRealData(), 60000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
 
   //   console.log("prediction", ys_outputs)
   createResult(result) {
@@ -156,7 +153,8 @@ class MLStuff extends React.Component {
       result,
       finalLoss,
       lastWeatherResult,
-      lastHomedataResult
+      lastHomedataResult,
+      lastPredictionTime
     } = this.state;
 
     return (
@@ -166,30 +164,32 @@ class MLStuff extends React.Component {
             <h4>Machine Learning Component</h4>
           </Grid>
           <Grid item xs={6}>
-            <p>Weather forecast for {lastWeatherResult.datetime} </p>
             <table>
-              <tr>Temp: {lastWeatherResult.temp}</tr>
-              <tr>Humidity: {lastWeatherResult.humidity}</tr>
-              <tr>Pressure: {lastWeatherResult.pressure}</tr>
-            </table>
-            <p>House data for {lastHomedataResult.datetime} </p>
-            <table>
-              <tr>Temp: {lastHomedataResult.temp}</tr>
-              <tr>Pressure: {lastHomedataResult.pressure}</tr>
+              <tbody>
+                <th>Weather forecast at {lastWeatherResult.datetime} </th>
+                <tr>Temp: {lastWeatherResult.temp}</tr>
+                <tr>Humidity: {lastWeatherResult.humidity}</tr>
+                <tr>Pressure: {lastWeatherResult.pressure}</tr>
+                <th>House data at {lastHomedataResult.datetime} </th>
+                <tr>Temp: {lastHomedataResult.temp}</tr>
+                <tr>Pressure: {lastHomedataResult.pressure}</tr>
+                <tr>Final Loss of the Model is: {finalLoss}</tr>
+              </tbody>
             </table>
 
-            <Button
+            {/* <Button
               variant="contained"
               onClick={this.startMLOnRealData}
               disabled={!this.state.isModelTrained}
             >
               Do ML!
-            </Button>
+            </Button> */}
           </Grid>
 
-          <Grid item item xs={6}>
-            <div>Final Loss of the Model is: {finalLoss}</div>
-            <div>Result is: {this.createResult(result)}</div>
+          <Grid item xs={6}>
+            <div>
+              [{lastPredictionTime}] Result is: {this.createResult(result)}
+            </div>
           </Grid>
         </Grid>
 
