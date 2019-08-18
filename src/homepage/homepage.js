@@ -1,9 +1,9 @@
 import React from "react";
-import CurentDataForecast from "./currentDataForecast/curentDataForecast";
-import Clock from "./clock";
+import CurentDataForecast from "./currentDataForecast/CurentDataForecast";
+import UserGreet from "./userGreet/UserGreet";
 import MLStuff from "../Logic/mlStuff";
 import { withStyles, Grid } from "@material-ui/core";
-import HistoricalDataChart from "./historicalDataChart/historicalDataChart";
+import HistoricalDataChart from "./historicalDataChart/HistoricalDataChart";
 
 const styles = theme => ({
   container: {
@@ -27,7 +27,7 @@ class Homepage extends React.Component {
         </Grid>
         <Grid item xs={5}>
           <Grid container direction="column" justify="flex-end" spacing={5}>
-            <Clock />
+            <UserGreet />
             <CurentDataForecast />
           </Grid>
         </Grid>

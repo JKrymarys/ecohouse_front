@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { withStyles, Paper } from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 import { allHouseDataEntries, allWeatherEntries } from "../../env";
 import Chart from "chart.js";
 
