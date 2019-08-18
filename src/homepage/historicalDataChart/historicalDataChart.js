@@ -17,7 +17,6 @@ class HistoricalDataChart extends React.Component {
     var tempHouseTemperatures = {};
     var tempWeatherTemperatures = {};
 
-
     function getAllHouseData() {
       return axios.get(allHouseDataEntries);
     }
@@ -25,15 +24,18 @@ class HistoricalDataChart extends React.Component {
       return axios.get(allWeatherEntries);
     }
 
-    axios.all([getAllWeatherData(), getAllHouseData()]).then(
+    axios
+      .all([getAllWeatherData(), getAllHouseData()])
+      .then(
         axios.spread((weather, housedata) => {
-        weather.data[0].forEach(el => {
+          weather.data[0].forEach(el => {
             tempWeatherTemperatures[el.datetime.value] = el.temp;
-        });
-        housedata.data[0].forEach(el => {
-          tempHouseTemperatures[el.datetime.value] = el.temp_house;
-        });
-      }))
+          });
+          housedata.data[0].forEach(el => {
+            tempHouseTemperatures[el.datetime.value] = el.temp_house;
+          });
+        })
+      )
       .then(() => {
         let myChart = new Chart(ctx, {
           type: "scatter",
@@ -58,25 +60,26 @@ class HistoricalDataChart extends React.Component {
           },
           options: {
             scales: {
-                xAxes: [{
-                  type: 'time',
-                  distribution: 'linear',
+              xAxes: [
+                {
+                  type: "time",
+                  distribution: "linear",
                   time: {
-                    round: "minute",
-                    unit: "hour",
-                    stepSize: "2",
-                    displayFormats: {
-                        day: 'MMM D',
-                        hour: 'MMM D h:mm a'
-
-                    }
+                    round: "minute"
+                    // unit: "hour",
+                    // stepSize: "2",
+                    // displayFormats: {
+                    //   day: "MMM D",
+                    //   hour: "MMM D h:mm a"
+                    // }
                   },
                   scaleLabel: {
                     display: true,
-                    labelString: 'Date'
-                },
-                }]
-              }
+                    labelString: "Date"
+                  }
+                }
+              ]
+            }
           }
         });
       });
