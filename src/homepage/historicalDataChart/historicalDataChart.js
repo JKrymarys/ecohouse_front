@@ -37,7 +37,7 @@ class HistoricalDataChart extends React.Component {
         })
       )
       .then(() => {
-        let myChart = new Chart(ctx, {
+        new Chart(ctx, {
           type: "scatter",
           data: {
             labels: Object.keys(tempHouseTemperatures),
@@ -86,8 +86,6 @@ class HistoricalDataChart extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
-
     return (
       <div>
         <canvas id="historicalDataChart" width="300" height="150" />
