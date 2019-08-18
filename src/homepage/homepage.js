@@ -1,7 +1,7 @@
 import React from "react";
 import CurentDataForecast from "./currentDataForecast/CurentDataForecast";
 import UserGreet from "./userGreet/UserGreet";
-import MLStuff from "../Logic/mlStuff";
+import MLStuff from "../logic/mlStuff";
 import { withStyles, Grid } from "@material-ui/core";
 import HistoricalDataChart from "./historicalDataChart/HistoricalDataChart";
 

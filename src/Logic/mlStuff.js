@@ -1,7 +1,7 @@
-import * as tf from "@tensorflow/tfjs";
-import { Grid } from "@material-ui/core";
-import React from "react";
-import axios from "axios";
+import * as tf from "./node_modules/@tensorflow/tfjs";
+import { Grid } from "./node_modules/@material-ui/core";
+import React from "./node_modules/react";
+import axios from "./node_modules/axios";
 import { lastWeatherEntry, lastHouseDataEntry } from "../env";
 import { trainingInput, trainingYs } from "./trainingData";
 
