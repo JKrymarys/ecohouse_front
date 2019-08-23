@@ -66,12 +66,6 @@ class HistoricalDataChart extends React.Component {
                   distribution: "linear",
                   time: {
                     round: "minute"
-                    // unit: "hour",
-                    // stepSize: "2",
-                    // displayFormats: {
-                    //   day: "MMM D",
-                    //   hour: "MMM D h:mm a"
-                    // }
                   },
                   scaleLabel: {
                     display: true,
