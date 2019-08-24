@@ -22,7 +22,7 @@ class HistoricalDataChart extends React.Component {
   createChart = (tempHouseChartData, tempWeatherChartData) => {
     const ctx = "historicalDataChart";
     new Chart(ctx, {
-      type: "scatter",
+      type: "line",
       data: {
         labels: Object.keys(tempHouseChartData),
         datasets: [
@@ -30,15 +30,15 @@ class HistoricalDataChart extends React.Component {
             label: "Temp House",
             fill: false,
             data: Object.values(tempHouseChartData),
-            backgroundColor: "red",
-            borderColor: "red"
+            backgroundColor: "rgba(255, 69, 0, 0.5)",
+            borderColor: "rgba(255, 69, 0, 0.8)"
           },
           {
             label: "Temp Weather",
             fill: false,
             data: Object.values(tempWeatherChartData),
-            backgroundColor: "blue",
-            borderColor: "blue"
+            backgroundColor: "rgba(135,206,250, 0.5)",
+            borderColor: "rgba(135,206,250, 0.8)"
           }
         ]
       },
