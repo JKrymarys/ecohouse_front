@@ -1,8 +1,7 @@
 import React from "react";
-import axios from "axios";
 import { withStyles } from "@material-ui/core";
-import { allHouseDataEntries, allWeatherEntries } from "../../env";
 import Chart from "chart.js";
+import { GetHistoricalData } from "../../logic/historicalDataWorker";
 
 const styles = theme => ({});
 
@@ -13,71 +12,55 @@ class HistoricalDataChart extends React.Component {
   }
 
   componentDidMount() {
-    const ctx = "historicalDataChart";
-    var tempHouseTemperatures = {};
-    var tempWeatherTemperatures = {};
-
-    function getAllHouseData() {
-      return axios.get(allHouseDataEntries);
-    }
-    function getAllWeatherData() {
-      return axios.get(allWeatherEntries);
-    }
-
-    axios
-      .all([getAllWeatherData(), getAllHouseData()])
-      .then(
-        axios.spread((weather, housedata) => {
-          weather.data[0].forEach(el => {
-            tempWeatherTemperatures[el.datetime.value] = el.temp;
-          });
-          housedata.data[0].forEach(el => {
-            tempHouseTemperatures[el.datetime.value] = el.temp_house;
-          });
-        })
-      )
-      .then(() => {
-        new Chart(ctx, {
-          type: "scatter",
-          data: {
-            labels: Object.keys(tempHouseTemperatures),
-            datasets: [
-              {
-                label: "Temp House",
-                fill: false,
-                data: Object.values(tempHouseTemperatures),
-                backgroundColor: "red",
-                borderColor: "red"
-              },
-              {
-                label: "Temp Weather",
-                fill: false,
-                data: Object.values(tempWeatherTemperatures),
-                backgroundColor: "blue",
-                borderColor: "blue"
-              }
-            ]
-          },
-          options: {
-            scales: {
-              xAxes: [
-                {
-                  type: "time",
-                  distribution: "linear",
-                  time: {
-                    round: "minute"
-                  },
-                  scaleLabel: {
-                    display: true,
-                    labelString: "Date"
-                  }
-                }
-              ]
-            }
-          }
-        });
-      });
+    GetHistoricalData().then(data => {
+      console.log("GetHistoricalData", data);
+      const { tempHouseChartData, tempWeatherChartData } = data;
+      this.createChart(tempHouseChartData, tempWeatherChartData);
+    });
   }
+
+  createChart = (tempHouseChartData, tempWeatherChartData) => {
+    const ctx = "historicalDataChart";
+    new Chart(ctx, {
+      type: "scatter",
+      data: {
+        labels: Object.keys(tempHouseChartData),
+        datasets: [
+          {
+            label: "Temp House",
+            fill: false,
+            data: Object.values(tempHouseChartData),
+            backgroundColor: "red",
+            borderColor: "red"
+          },
+          {
+            label: "Temp Weather",
+            fill: false,
+            data: Object.values(tempWeatherChartData),
+            backgroundColor: "blue",
+            borderColor: "blue"
+          }
+        ]
+      },
+      options: {
+        scales: {
+          xAxes: [
+            {
+              type: "time",
+              distribution: "linear",
+              time: {
+                round: "minute"
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Date"
+              }
+            }
+          ]
+        }
+      }
+    });
+  };
 
   render() {
     return (

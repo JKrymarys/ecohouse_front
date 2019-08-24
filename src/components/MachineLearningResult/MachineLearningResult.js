@@ -2,9 +2,6 @@ import { Grid } from "@material-ui/core";
 import React from "react";
 
 class MachineLearningResult extends React.Component {
-  componentWillMount() {}
-
-  //   console.log("prediction", ys_outputs)
   createResult(result) {
     if (result === 1) return "OPEN WINDOWS TO HEAT HOUSE";
     else if (result === 0) return "CLOSE WINDOWS TO REDUCE COLLING OF HOUSE";
