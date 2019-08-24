@@ -20,10 +20,10 @@ class MachineLearningResult extends React.Component {
     return (
       <div>
         <Grid container direction="column">
-          <Grid item xs={6}>
+          <Grid item>
             <h4>Machine Learning Component</h4>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item>
             <table>
               <tbody>
                 <tr>
@@ -62,10 +62,10 @@ class MachineLearningResult extends React.Component {
             </table>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item>
             <div>
               [{lastPredictionTime}] Result is:
-              {this.createResult(predictionResult)}
+              <b> {this.createResult(predictionResult)}</b>
             </div>
           </Grid>
         </Grid>
