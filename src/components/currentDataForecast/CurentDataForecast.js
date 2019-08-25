@@ -5,7 +5,7 @@ import { GetCurrentWeather } from "../../logic/homepageApiWorker";
 const styles = theme => ({
   infoPaper: {
     textAlign: "center",
-    margin: 20,
+    marginTop: 20,
     width: "100%"
   }
 });

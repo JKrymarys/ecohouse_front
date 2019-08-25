@@ -21,9 +21,9 @@ class UserGreet extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>Have a nice day!</h1>
-        <h2>It is {this.state.time.toLocaleTimeString()}</h2>
+      <div style={{ textAlign: "center" }}>
+        <h1>EcoHouse - automation system</h1>
+        <h2> {this.state.time.toLocaleTimeString()}</h2>
       </div>
     );
   }

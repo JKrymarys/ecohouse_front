@@ -1,9 +1,15 @@
 import React from "react";
-import { withStyles } from "@material-ui/core";
+import { withStyles, Paper } from "@material-ui/core";
 import Chart from "chart.js";
 import { GetHistoricalData } from "../../logic/historicalDataWorker";
 
-const styles = theme => ({});
+const styles = theme => ({
+  infoPaper: {
+    textAlign: "center",
+    marginTop: 20,
+    width: "100%"
+  }
+});
 
 class HistoricalDataChart extends React.Component {
   constructor(pros) {
@@ -63,10 +69,11 @@ class HistoricalDataChart extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
-      <div>
-        <canvas id="historicalDataChart" width="300" height="150" />
-      </div>
+      <Paper className={classes.infoPaper}>
+        <canvas id="historicalDataChart" />
+      </Paper>
     );
   }
 }

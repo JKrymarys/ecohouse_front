@@ -50,7 +50,7 @@ const predictModel = data => {
   return output.data().then(res => {
     return {
       predictionData: data,
-      result: Math.round(res),
+      result: res,
       lastPredictionTime: new Date().toLocaleString()
     };
   });

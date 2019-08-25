@@ -13,6 +13,7 @@ import {
 const styles = theme => ({
   container: {
     // marginTop: 50,
+    // height: "100vw"
   }
 });
 
@@ -21,7 +22,7 @@ class Homepage extends React.Component {
     super(props);
     this.state = {
       isModelTrained: false,
-      predictionResult: {},
+      predictionResult: null,
       predictionData: {
         lastWeatherResult: {
           datetime: null,
@@ -81,8 +82,9 @@ class Homepage extends React.Component {
         justify="flex-end"
         spacing={5}
       >
-        <Grid item xs={7}>
+        <Grid item xs={7} spacing={5}>
           <HistoricalDataChart />
+          <br />
           <MachineLearningComponent
             isModelTrained={isModelTrained}
             predictionData={predictionData}

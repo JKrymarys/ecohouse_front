@@ -1,15 +1,28 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Paper, withStyles } from "@material-ui/core";
 import React from "react";
 
+const styles = theme => ({
+  infoPaper: {
+    width: "100%"
+  },
+  setMargin: {
+    margin: 20
+  }
+});
+
 class MachineLearningResult extends React.Component {
-  createResult(result) {
-    if (result === 1) return "OPEN WINDOWS TO HEAT HOUSE";
-    else if (result === 0) return "CLOSE WINDOWS TO REDUCE COLLING OF HOUSE";
-    else return "-";
+  createResult(res) {
+    if (res === null) return "-";
+
+    const result = Math.round(res);
+    if (result === 1) return `OPEN WINDOWS TO HEAT HOUSE [${res}]`;
+    else if (result === 0)
+      return `CLOSE WINDOWS TO REDUCE COLLING OF HOUSE [${res}]`;
   }
 
   render() {
     const {
+      classes,
       isModelTrained,
       predictionData,
       predictionResult,
@@ -18,12 +31,12 @@ class MachineLearningResult extends React.Component {
     } = this.props;
 
     return (
-      <div>
+      <Paper className={classes.infoPaper}>
         <Grid container direction="column">
-          <Grid item>
+          <Grid item className={classes.setMargin}>
             <h4>Machine Learning Component</h4>
           </Grid>
-          <Grid item>
+          <Grid item className={classes.setMargin}>
             <table>
               <tbody>
                 <tr>
@@ -62,10 +75,10 @@ class MachineLearningResult extends React.Component {
             </table>
           </Grid>
 
-          <Grid item>
+          <Grid item className={classes.setMargin}>
             <div>
               [{lastPredictionTime}] Result is:
-              <b> {this.createResult(predictionResult)}</b>
+              <b>{this.createResult(predictionResult)}</b>
             </div>
           </Grid>
         </Grid>
@@ -94,9 +107,9 @@ class MachineLearningResult extends React.Component {
             System is learning now :) <br /> Please give it a moment or two.
           </p>
         </div>
-      </div>
+      </Paper>
     );
   }
 }
 
-export default MachineLearningResult;
+export default withStyles(styles)(MachineLearningResult);
