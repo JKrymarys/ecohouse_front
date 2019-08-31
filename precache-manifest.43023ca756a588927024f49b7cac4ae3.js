@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "596219651812bd9140b07b64fae6d514",
+    "revision": "09055ee474e6979d4ee62a1e1298a0cb",
     "url": "/ecohouse_front/index.html"
   },
   {
-    "revision": "ea73636d44f144f12fbb",
+    "revision": "4bcc56445dfee21d4741",
     "url": "/ecohouse_front/static/css/main.2cce8147.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ecohouse_front/static/js/2.498fdbf6.chunk.js"
   },
   {
-    "revision": "ea73636d44f144f12fbb",
-    "url": "/ecohouse_front/static/js/main.8d854006.chunk.js"
+    "revision": "4bcc56445dfee21d4741",
+    "url": "/ecohouse_front/static/js/main.fafa60b6.chunk.js"
   },
   {
     "revision": "051c762a6ad444ffe1d1",

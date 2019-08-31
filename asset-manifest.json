@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/ecohouse_front/static/css/main.2cce8147.chunk.css",
-    "main.js": "/ecohouse_front/static/js/main.8d854006.chunk.js",
-    "main.js.map": "/ecohouse_front/static/js/main.8d854006.chunk.js.map",
+    "main.js": "/ecohouse_front/static/js/main.fafa60b6.chunk.js",
+    "main.js.map": "/ecohouse_front/static/js/main.fafa60b6.chunk.js.map",
     "runtime~main.js": "/ecohouse_front/static/js/runtime~main.287288bb.js",
     "runtime~main.js.map": "/ecohouse_front/static/js/runtime~main.287288bb.js.map",
     "static/js/2.498fdbf6.chunk.js": "/ecohouse_front/static/js/2.498fdbf6.chunk.js",
     "static/js/2.498fdbf6.chunk.js.map": "/ecohouse_front/static/js/2.498fdbf6.chunk.js.map",
     "index.html": "/ecohouse_front/index.html",
-    "precache-manifest.c744555d9e517d357b859a8ef5d2b197.js": "/ecohouse_front/precache-manifest.c744555d9e517d357b859a8ef5d2b197.js",
+    "precache-manifest.43023ca756a588927024f49b7cac4ae3.js": "/ecohouse_front/precache-manifest.43023ca756a588927024f49b7cac4ae3.js",
     "service-worker.js": "/ecohouse_front/service-worker.js",
     "static/css/main.2cce8147.chunk.css.map": "/ecohouse_front/static/css/main.2cce8147.chunk.css.map"
   }
