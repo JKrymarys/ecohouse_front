@@ -11,44 +11,56 @@ const styles = theme => ({
   }
 });
 
+let chartObject = null;
+
 class HistoricalDataChart extends React.Component {
-  constructor(pros) {
-    super(pros);
-    this.state = {};
+  componentDidMount() {
+    this.createChart();
+    this.getAndSetHistoricalData();
+    this.updateChartTimer();
   }
 
-  componentDidMount() {
-    GetHistoricalData().then(data => {
-      console.log("GetHistoricalData", data);
+  getAndSetHistoricalData() {
+    return GetHistoricalData().then(data => {
       const { tempHouseChartData, tempWeatherChartData } = data;
-      this.createChart(tempHouseChartData, tempWeatherChartData);
+      chartObject.data.datasets = [
+        {
+          label: "Temp House",
+          fill: false,
+          data: Object.values(tempHouseChartData),
+          backgroundColor: "rgba(255, 69, 0, 0.5)",
+          borderColor: "rgba(255, 69, 0, 0.8)"
+        },
+        {
+          label: "Temp Weather",
+          fill: false,
+          data: Object.values(tempWeatherChartData),
+          backgroundColor: "rgba(135,206,250, 0.5)",
+          borderColor: "rgba(135,206,250, 0.8)"
+        }
+      ];
+      chartObject.data.labels = Object.keys(tempHouseChartData);
+      chartObject.update();
     });
   }
 
-  createChart = (tempHouseChartData, tempWeatherChartData) => {
+  updateChartTimer() {
+    this.timerID = setInterval(() => {
+      console.log("chartObject", chartObject);
+      this.getAndSetHistoricalData();
+    }, 60000);
+  }
+  createChart = () => {
+    // const { tempHouseChartData, tempWeatherChartData } = this.state;
     const ctx = "historicalDataChart";
-    new Chart(ctx, {
+    chartObject = new Chart(ctx, {
       type: "line",
       data: {
-        labels: Object.keys(tempHouseChartData),
-        datasets: [
-          {
-            label: "Temp House",
-            fill: false,
-            data: Object.values(tempHouseChartData),
-            backgroundColor: "rgba(255, 69, 0, 0.5)",
-            borderColor: "rgba(255, 69, 0, 0.8)"
-          },
-          {
-            label: "Temp Weather",
-            fill: false,
-            data: Object.values(tempWeatherChartData),
-            backgroundColor: "rgba(135,206,250, 0.5)",
-            borderColor: "rgba(135,206,250, 0.8)"
-          }
-        ]
+        labels: [],
+        datasets: []
       },
       options: {
+        animation: false,
         scales: {
           xAxes: [
             {

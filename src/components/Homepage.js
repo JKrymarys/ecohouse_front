@@ -54,14 +54,14 @@ class Homepage extends React.Component {
       .then(
         (this.timerID = setInterval(
           () =>
-            startMLOnRealData().then(data =>
+            startMLOnRealData().then(data => {
               this.setState({
                 predictionData: data.predictionData,
                 predictionResult: data.result,
                 lastPredictionTime: data.lastPredictionTime
-              })
-            ),
-          30000
+              });
+            }),
+          6000
         ))
       );
   }

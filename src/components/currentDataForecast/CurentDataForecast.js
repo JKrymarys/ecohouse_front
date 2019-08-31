@@ -18,13 +18,12 @@ class CurentDataForecast extends React.Component {
 
   componentDidMount() {
     GetCurrentWeather().then(result => {
-      console.log("result", result);
-      this.setState(prevState => ({
+      this.setState({
         currentCity: result.name,
         currentTemp: result.main.temp,
         currentHumidity: result.main.humidity,
         currentPressure: result.main.pressure
-      }));
+      });
     });
   }
 

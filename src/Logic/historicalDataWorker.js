@@ -20,12 +20,12 @@ export async function GetHistoricalData() {
       })
     )
     .then(({ weather, housedata }) => {
-      const tempWeatherTemperatures = housedata.reduce((chartData, el) => {
+      const tempHouseTemperatures = housedata.reduce((chartData, el) => {
         chartData[el.datetime.value] = el.temp_house;
         return chartData;
       }, {});
 
-      const tempHouseTemperatures = weather.reduce((chartData, el) => {
+      const tempWeatherTemperatures = weather.reduce((chartData, el) => {
         chartData[el.datetime.value] = el.temp;
         return chartData;
       }, {});
