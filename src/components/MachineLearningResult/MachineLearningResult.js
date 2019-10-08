@@ -15,9 +15,8 @@ class MachineLearningResult extends React.Component {
     if (res === null) return "-";
 
     const result = Math.round(res);
-    if (result === 1) return `OPEN WINDOWS TO HEAT HOUSE [${res}]`;
-    else if (result === 0)
-      return `CLOSE WINDOWS TO REDUCE COLLING OF HOUSE [${res}]`;
+    if (result === 1) return `OPEN WINDOWS [${res}]`;
+    else if (result === 0) return `CLOSE WINDOWS [${res}]`;
   }
 
   render() {

@@ -74,6 +74,14 @@ class HistoricalDataChart extends React.Component {
                 labelString: "Date"
               }
             }
+          ],
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: "Temperature (°C)"
+              }
+            }
           ]
         }
       }

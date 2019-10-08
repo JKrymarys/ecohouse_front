@@ -3,11 +3,11 @@ import axios from "axios";
 import { lastWeatherEntry, lastHouseDataEntry } from "../env";
 import { trainingInput, trainingYs } from "../logic/trainingData";
 
-const LEARNING_RATE = 0.1;
+const LEARNING_RATE = 0.01;
 const LEARNING_ITERATIONS = 100;
 const model = tf.sequential();
 const configHiddenLayer = {
-  units: 4,
+  units: 8,
   inputShape: [3],
   activation: "sigmoid"
 };
@@ -15,15 +15,22 @@ const configOutputLayer = {
   units: 1,
   activation: "sigmoid"
 };
-const sgdOptimizer = tf.train.sgd(LEARNING_RATE);
-// const lossFunction
+const optimizer = tf.train.adam(LEARNING_RATE);
 const compileConifg = {
-  optimizer: sgdOptimizer,
+  metrics: ["accuracy"],
+  optimizer: optimizer,
   loss: "meanSquaredError"
 };
+
+function onBatchEnd(batch, logs) {
+  console.log("Accuracy", logs.acc);
+}
+
 const fitConfig = {
   verbose: true,
-  epochs: 5
+  epochs: 5,
+  batchSize: 32,
+  callbacks: { onBatchEnd }
 };
 
 async function trainModel() {
@@ -39,11 +46,10 @@ async function trainModel() {
 }
 
 const predictModel = data => {
-  let input = [
-    parseInt(data.lastHomedataResult.temp),
-    parseInt(23),
-    parseInt(data.lastWeatherResult.temp)
-  ];
+  const homeTemp = data.lastHomedataResult.temp;
+  const weatherTemp = data.lastWeatherResult.temp;
+
+  let input = [parseInt(homeTemp), parseInt(23), parseInt(weatherTemp)];
   const xs_inputs_prod = tf.tensor2d([input]);
   let output = model.predict(xs_inputs_prod);
 
@@ -95,6 +101,19 @@ export const startMLOnRealData = async () => {
       })
     )
     .then(data => predictModel(data));
+};
+
+export const startMLonGivenData = async (inputHouseData, inputWeatherData) => {
+  const data = {
+    lastHomedataResult: {
+      temp: inputHouseData
+    },
+    lastWeatherResult: {
+      temp: inputWeatherData
+    }
+  };
+
+  return predictModel(data);
 };
 
 export async function startTrainingModel() {

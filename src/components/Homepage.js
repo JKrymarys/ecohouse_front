@@ -4,6 +4,7 @@ import UserGreet from "./userGreet/UserGreet";
 import MachineLearningComponent from "./MachineLearningResult/MachineLearningResult";
 import { withStyles, Grid } from "@material-ui/core";
 import HistoricalDataChart from "./historicalDataChart/HistoricalDataChart";
+import MachineLearningManual from "./machineLearningManual/MachineLearningManual";
 
 import {
   startMLOnRealData,
@@ -82,7 +83,7 @@ class Homepage extends React.Component {
         justify="flex-end"
         spacing={5}
       >
-        <Grid item xs={7} spacing={5}>
+        <Grid item xs={7}>
           <HistoricalDataChart />
           <br />
           <MachineLearningComponent
@@ -97,6 +98,7 @@ class Homepage extends React.Component {
           <Grid container direction="column" justify="flex-end" spacing={5}>
             <UserGreet />
             <CurentDataForecast />
+            <MachineLearningManual />
           </Grid>
         </Grid>
       </Grid>
